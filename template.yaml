@@ -55,25 +55,17 @@ Resources:
       Action: "lambda:InvokeFunction"
       Principal: "events.amazonaws.com"
       SourceArn: !GetAtt ["EventRule", "Arn"]
-        # Fn::GetAtt: 
-        #   - "EventRule"
-        #   - "Arn"
-
-      
-      # Events:
-      #   HelloWorld:
-      #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-      #     Properties:
-      #       Path: /hello
-      #       Method: get
-
-# Outputs:
-#   HelloWorldApi:
-#     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-#   HelloWorldFunction:
-#     Description: "Hello World Lambda Function ARN"
-#     Value: !GetAtt HelloWorldFunction.Arn
-#   HelloWorldFunctionIamRole:
-#     Description: "Implicit IAM Role created for Hello World function"
-#     Value: !GetAtt HelloWorldFunctionRole.Arn
+  
+Outputs:
+  OrderServiceFunction:
+    Description: "OrderService Lambda Function ARN"
+    Value: !GetAtt orderServiceFunction.Arn
+  OrderServiceFunctionIamRole:
+    Description: "Implicit IAM Role created for OrderService function"
+    Value: !GetAtt orderServiceFunctionRole.Arn
+  InvoiceServiceFunction:
+    Description: "InvoiceService Lambda Function ARN"
+    Value: !GetAtt invoiceServiceFunction.Arn
+  InvoiceServiceFunctionIamRole:
+    Description: "Implicit IAM Role created for InvoiceService function"
+    Value: !GetAtt invoiceServiceFunctionRole.Arn

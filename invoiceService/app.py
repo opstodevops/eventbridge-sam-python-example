@@ -6,7 +6,7 @@ def lambda_handler(event, context):
     # Event contains the order info
     # Does some work to create an Invoice
     
-    print('## EVENT')
+    print('## EVENT Received!')
     print(event)
     
     return {
