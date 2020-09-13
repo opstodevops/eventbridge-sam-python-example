@@ -1,0 +1,79 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  eventbridge-sam-python-example
+
+  Sample SAM Template for eventbridge-sam-python-example
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  orderServiceFunction: # First lambda function
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: orderService/
+      Handler: app.lambda_handler
+      Runtime: python3.6
+      Policies:
+        - Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+              - events:PutEvents
+              
+  invoiceServiceFunction: # Second lambda function
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: invoiceService/
+      Handler: app.lambda_handler
+      Runtime: python3.6
+  
+  EventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: !Sub "${AWS::StackName}-EventRule"
+      Description: "EventRule"
+      EventPattern:
+        source:
+          - "demo.orders"
+        detail:
+          state:
+            - "created"
+      State: "ENABLED"
+      Targets:
+        - Arn: !GetAtt [invoiceServiceFunction, Arn]
+          Id: "invoiceServiceTarget"
+          
+  PermissionForEventsToInvokeLambda: 
+    Type: AWS::Lambda::Permission
+    Properties: 
+      FunctionName: 
+        Ref: "invoiceServiceFunction"
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt ["EventRule", "Arn"]
+        # Fn::GetAtt: 
+        #   - "EventRule"
+        #   - "Arn"
+
+      
+      # Events:
+      #   HelloWorld:
+      #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+      #     Properties:
+      #       Path: /hello
+      #       Method: get
+
+# Outputs:
+#   HelloWorldApi:
+#     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+#   HelloWorldFunction:
+#     Description: "Hello World Lambda Function ARN"
+#     Value: !GetAtt HelloWorldFunction.Arn
+#   HelloWorldFunctionIamRole:
+#     Description: "Implicit IAM Role created for Hello World function"
+#     Value: !GetAtt HelloWorldFunctionRole.Arn
