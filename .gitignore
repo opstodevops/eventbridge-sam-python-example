@@ -1,2 +1,5 @@
 # Ignore SAM build directory
 .aws-sam
+
+# Ignore aws lambda out file
+out

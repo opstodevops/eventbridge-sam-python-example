@@ -12,9 +12,9 @@ def lambda_handler(event, context):
     response = event_bridge.put_events(
         Entries=[
             {
-                'Source': 'demo.orders',
-                'DetailType': 'New Order',
-                'Detail': json.dumps({
+                "Source": "demo.orders",
+                "DetailType": "New Order",
+                "Detail": json.dumps({
                     "state": "created",
                     "id": "123"
                 })

@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     # Does some work to create an Invoice
     
     print('## EVENT Received!')
-    print(event)
+    print(json.dumps(event))
     
     return {
         "statusCode": 200,
