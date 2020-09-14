@@ -23,5 +23,5 @@ def lambda_handler(event, context):
     )
     
     logging.info('---Response---')
-    print(response)
+    print(json.dumps(response))
     
