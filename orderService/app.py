@@ -22,6 +22,6 @@ def lambda_handler(event, context):
         ]
     )
     
-    logging.info('---Response---')
+    logging.info('## RESPONSE')
     print(json.dumps(response))
     
