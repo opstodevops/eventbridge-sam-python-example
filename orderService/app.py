@@ -2,10 +2,13 @@ import json
 import boto3
 import logging
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+# logger = logging.getLogger()
+# logger.setLevel(logging.INFO)
 
 def lambda_handler(event, context):
+    
+    # Some code which does something... process an invoice
+    # Then create an event
     
     event_bridge = boto3.client('events')
     
@@ -22,6 +25,7 @@ def lambda_handler(event, context):
         ]
     )
     
-    logging.info('## RESPONSE')
+    # logging.info('## RESPONSE')
+    print('## RESPONSE')
     print(json.dumps(response))
     
